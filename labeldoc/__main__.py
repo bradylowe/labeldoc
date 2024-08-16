@@ -27,14 +27,15 @@ def main():
     # Initialize the main window (view)
     main_window = MainWindow()
     main_window.setGeometry(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT)
-    if args.file:
-        main_window.setWindowTitle(f"{APP_NAME} - {args.file}")
-        main_window.controller.load_document(args.file)
-    else:
-        main_window.setWindowTitle(APP_NAME)
+    main_window.setWindowTitle(APP_NAME)
 
     # Initialize the controller, passing the model and the view
     controller = AppController(model, main_window)
+
+    # Load the given file, if any
+    if args.file:
+        main_window.setWindowTitle(f"{APP_NAME} - {args.file}")
+        main_window.controller.load_document(args.file)
 
     # Set the controller in the view
     main_window.set_controller(controller)
