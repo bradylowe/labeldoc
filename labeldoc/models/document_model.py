@@ -1,5 +1,6 @@
 # app/models/document_model.py
 
+from pdf2image import convert_from_path
 from PIL import Image
 
 class DocumentModel:
@@ -13,10 +14,22 @@ class DocumentModel:
         self.pages = self.split_document_into_pages(file_path)
         self.current_page_index = 0
 
-    def split_document_into_pages(self, file_path):
-        """Example: Load image(s) as PIL Image objects."""
-        pil_image = Image.open(file_path)  # Replace with actual logic for multiple pages
-        return [pil_image]  # Assuming a single-page document for this example
+    def split_document_into_pages(self, file_paths):
+        """Load images from a path or list of paths (PDF or PNG)"""
+        if isinstance(file_paths, str):
+            file_paths = [file_paths]
+        
+        images = []
+        for path in file_paths:
+            clean_path = path.lower()
+            if clean_path.endswith('.pdf'):
+                images.extend(convert_from_path(path))
+            elif clean_path.endswith('.png'):
+                images.append(Image.open(path))
+            else:
+                raise ValueError(f'Could not load {path}. File type not supported.')
+        
+        return images
 
     def get_current_page(self):
         return self.pages[self.current_page_index] if self.pages else None
