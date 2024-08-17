@@ -13,6 +13,11 @@ class DocumentModel:
         """Load the document and split it into pages."""
         self.pages = self.split_document_into_pages(file_path)
         self.current_page_index = 0
+    
+    def load_images(self, images):
+        """Load the images and split them into pages."""
+        self.pages = images if isinstance(images, list) else [images]
+        self.current_page_index = 0
 
     def split_document_into_pages(self, file_paths):
         """Load images from a path or list of paths (PDF or PNG)"""

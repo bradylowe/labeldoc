@@ -1,16 +1,11 @@
 # app/views/main_view.py
 
 import os
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt, QStandardPaths
 from PyQt6.QtWidgets import (
     QMainWindow, 
-    QToolBar, 
     QDockWidget, 
-    QHBoxLayout, 
-    QWidget, 
     QFileDialog, 
-    QMessageBox, 
     QScrollArea,
 )
 
@@ -24,7 +19,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.controller: AppController = None
-        self.setWindowTitle("Canvas")
+        self.setWindowTitle("LabelDoc")
         self.setGeometry(100, 100, 1200, 800)
 
         # Create the scroll area and set the CanvasWidget as its widget
@@ -42,10 +37,10 @@ class MainWindow(QMainWindow):
 
         # Results widget on the right
         self.results_widget = ResultsWidget()
-        dock = QDockWidget("Results", self)
-        dock.setWidget(self.results_widget)
-        dock.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
-        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
+        results_dock = QDockWidget("Results", self)
+        results_dock.setWidget(self.results_widget)
+        results_dock.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, results_dock)
 
         # Add status bar at the bottom
         self.statusBar().showMessage("Ready")
@@ -95,3 +90,17 @@ class MainWindow(QMainWindow):
     def get_current_shapes(self):
         """Return the current shapes from the canvas."""
         return self.canvas.shapes
+    
+    def load_current_browser_page(self):
+        """Print the current web page in the active browser tab to a PDF, convert it to PIL images, and load them into the canvas."""
+        if hasattr(self.controller, 'browser_window'):
+            browser = self.controller.browser_window
+            current_tab = browser.tabs.currentWidget()
+            if current_tab:
+                try:
+                    pil_images = current_tab.generate_pil_images_from_webpage()
+                    self.controller.load_images(pil_images)  # Assuming you have a method to handle a list of PIL images
+                except RuntimeError as e:
+                    print(f"Failed to load browser page: {e}")
+
+

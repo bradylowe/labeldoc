@@ -24,6 +24,12 @@ class ToolbarWidget(QToolBar):
         save_action = self.addAction(QIcon(os.path.join(self.icon_path, 'save.png')), "Save")
         save_action.triggered.connect(self.save_annotations)
 
+        open_browser_action = self.addAction(QIcon(os.path.join(self.icon_path, 'browser.png')), "Web Broswer")
+        open_browser_action.triggered.connect(self.open_browser)
+
+        load_web_to_canvas = self.addAction(QIcon(os.path.join(self.icon_path, 'load_web_page.png')), "Load Page\nFrom Web")
+        load_web_to_canvas.triggered.connect(self.load_current_browser_page)
+
         self.addSeparator()
 
         next_page_action = self.addAction(QIcon(os.path.join(self.icon_path, 'next.png')), "Next Page")
@@ -43,6 +49,10 @@ class ToolbarWidget(QToolBar):
         print_log_action = self.addAction(QIcon(os.path.join(self.icon_path, 'log.png')), "Actions Log")
         print_log_action.triggered.connect(self.parent().canvas.action_manager.print_action_log)
 
+    def open_browser(self):
+        if self.controller:
+            self.controller.open_browser()
+
     def open_file_dialog(self):
         if self.controller:
             self.controller.open_file_dialog()
@@ -58,3 +68,7 @@ class ToolbarWidget(QToolBar):
     def previous_page(self):
         if self.controller:
             self.controller.previous_page()
+    
+    def load_current_browser_page(self):
+        if self.controller:
+            self.controller.load_current_browser_page()

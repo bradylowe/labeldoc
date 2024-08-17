@@ -1,21 +1,35 @@
 # app/controllers/app_controller.py
 from ..models.document_model import DocumentModel
-from ..views.main_view import CanvasWidget
+from ..widgets.web_view import BrowserWindow
 
 class AppController:
     def __init__(self, model, view):
         self.model: DocumentModel = model
-        self.view: CanvasWidget = view
+        self.view = view
         self.view.set_controller(self)
 
     def load_document(self, file_path):
         self.model.load_document(file_path)
+        self.update_view()
+    
+    def load_images(self, images):
+        self.model.load_images(images)
         self.update_view()
 
     def save_annotations(self):
         current_page_index = self.model.current_page_index
         shapes = self.view.get_current_shapes()
         self.model.save_annotations(current_page_index, shapes)
+
+    def load_web_image_to_canvas(self, url):
+        self.view.load_image_from_web(url)
+    
+    def open_browser(self):
+        self.browser_window = BrowserWindow()
+        self.browser_window.show()
+    
+    def load_current_browser_page(self):
+        self.view.load_current_browser_page()
 
     def next_page(self):
         if not self.model.is_last_page():
