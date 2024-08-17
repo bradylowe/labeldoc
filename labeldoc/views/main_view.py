@@ -1,32 +1,46 @@
 # app/views/main_view.py
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QDockWidget, QHBoxLayout, QWidget, QFileDialog, QMessageBox
-from PyQt5.QtGui import QIcon
 import os
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (
+    QMainWindow, 
+    QToolBar, 
+    QDockWidget, 
+    QHBoxLayout, 
+    QWidget, 
+    QFileDialog, 
+    QMessageBox, 
+    QScrollArea,
+)
+
 from ..widgets.canvas import CanvasWidget
 from ..widgets.results_widget import ResultsWidget
 from ..controllers.app_controller import AppController
 
 class MainWindow(QMainWindow):
+    
+    _toolbar_actions_created = False
+    
     def __init__(self):
         super().__init__()
         self.controller: AppController = None
-        self.setWindowTitle("Annotation Tool")
+        self.setWindowTitle("Canvas")
         self.setGeometry(100, 100, 1200, 800)
 
-        # Main layout setup
-        central_widget = QWidget()
-        main_layout = QHBoxLayout(central_widget)
+        # Create the scroll area and set the CanvasWidget as its widget
+        self.scroll_area = QScrollArea()
+        self.canvas = CanvasWidget(self.scroll_area)
+        self.scroll_area.setWidget(self.canvas)
+        self.scroll_area.setWidgetResizable(True)
+
+        # Set the scroll area as the central widget
+        self.setCentralWidget(self.scroll_area)
 
         # Toolbar on the left
         self.toolbar = QToolBar("Toolbar")
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, self.toolbar)
-        self._toolbar_actions_created = False
-
-        # Main canvas area
-        self.canvas = CanvasWidget()
-        main_layout.addWidget(self.canvas)
+        self._create_toolbar_actions(self.toolbar)
 
         # Results widget on the right
         self.results_widget = ResultsWidget()
@@ -34,9 +48,6 @@ class MainWindow(QMainWindow):
         dock.setWidget(self.results_widget)
         dock.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
-
-        # Set central widget
-        self.setCentralWidget(central_widget)
 
         # Add status bar at the bottom
         self.statusBar().showMessage("Ready")
@@ -103,10 +114,10 @@ class MainWindow(QMainWindow):
         self.controller.last_page()
         self.statusBar().showMessage(f"Page {self.controller.model.current_page_index + 1} of {len(self.controller.model.pages)}")
 
-    def load_page(self, image_path, annotations):
+    def load_page(self, image_path, shapes):
         """Load the image and annotations into the canvas."""
         self.canvas.load_image(image_path)
-        self.canvas.load_annotations(annotations)
+        self.canvas.load_shapes(shapes)
 
     def get_current_shapes(self):
         """Return the current shapes from the canvas."""
