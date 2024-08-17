@@ -20,8 +20,6 @@ from ..controllers.app_controller import AppController
 
 class MainWindow(QMainWindow):
     
-    _toolbar_actions_created = False
-    
     def __init__(self):
         super().__init__()
         self.controller: AppController = None
@@ -55,9 +53,6 @@ class MainWindow(QMainWindow):
     def set_controller(self, controller):
         """Connect the main window to the app controller."""
         self.controller = controller
-        if not self._toolbar_actions_created:
-            self._toolbar_actions_created = True
-            self._create_toolbar_actions(self.toolbar)
 
     def _create_toolbar_actions(self, toolbar):
         icon_path = os.path.join(os.path.dirname(__file__), '../../resources/icons')
