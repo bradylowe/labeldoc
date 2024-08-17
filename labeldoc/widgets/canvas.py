@@ -182,7 +182,7 @@ class CanvasWidget(QWidget):
 
     def mouseMoveEvent(self, event):
         """Handle mouse movement for panning."""
-        if event.buttons() & Qt.LeftButton:
+        if event.buttons() & Qt.MouseButton.LeftButton:
             current_pos = event.pos()
             self.perform_pan(self.last_pos, current_pos)
             self.last_pos = current_pos
