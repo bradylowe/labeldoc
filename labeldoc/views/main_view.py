@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 
 from ..widgets.canvas import CanvasWidget
 from ..widgets.results_widget import ResultsWidget
+from ..widgets.toolbar import ToolbarWidget
 from ..controllers.app_controller import AppController
 
 class MainWindow(QMainWindow):
@@ -36,9 +37,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.scroll_area)
 
         # Toolbar on the left
-        self.toolbar = QToolBar("Toolbar")
+        self.toolbar = ToolbarWidget(self)
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, self.toolbar)
-        self._create_toolbar_actions(self.toolbar)
 
         # Results widget on the right
         self.results_widget = ResultsWidget()
@@ -53,42 +53,7 @@ class MainWindow(QMainWindow):
     def set_controller(self, controller):
         """Connect the main window to the app controller."""
         self.controller = controller
-
-    def _create_toolbar_actions(self, toolbar):
-        icon_path = os.path.join(os.path.dirname(__file__), '../../resources/icons')
-
-        open_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'open.png')), "Open")
-        open_action.triggered.connect(self.open_file_dialog)
-
-        save_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'save.png')), "Save")
-        save_action.triggered.connect(self.save_annotations)
-
-        toolbar.addSeparator()
-
-        next_page_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'next.png')), "Next Page")
-        next_page_action.triggered.connect(self.next_page)
-
-        previous_page_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'prev.png')), "Previous Page")
-        previous_page_action.triggered.connect(self.previous_page)
-
-        undo_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'undo.png')), "Undo")
-        undo_action.triggered.connect(self.canvas.action_manager.undo)
-
-        redo_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'redo.png')), "Redo")
-        redo_action.triggered.connect(self.canvas.action_manager.redo)
-
-        toolbar.addSeparator()
-
-        print_log_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'log.png')), "Print Actions Log")
-        print_log_action.triggered.connect(self.canvas.action_manager.print_action_log)
-
-        '''
-        first_page_action = toolbar.addAction("First Page")
-        first_page_action.triggered.connect(self.first_page)
-
-        last_page_action = toolbar.addAction("Last Page")
-        last_page_action.triggered.connect(self.last_page)
-        '''
+        self.toolbar.set_controller(controller)
 
     def open_file_dialog(self):
         """Open a file dialog to select a document and load it."""
