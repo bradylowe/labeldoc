@@ -1,8 +1,8 @@
 # app/widgets/canvas.py
 
-from PyQt5.QtWidgets import QWidget, QScrollArea
-from PyQt5.QtGui import QPainter, QImage, QColor, QTransform
-from PyQt5.QtCore import Qt, QPoint
+from PyQt6.QtWidgets import QWidget, QScrollArea
+from PyQt6.QtGui import QPainter, QImage, QColor, QTransform
+from PyQt6.QtCore import Qt, QPoint
 from ..utils.image_conversion import pil_to_qimage
 from ..actions import ActionManager, ZoomAction, DrawShapeAction, InitialZoomAction, PanAction
 

@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 from .views.main_view import MainWindow
 from .config import APP_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, DARK_THEME
 
@@ -44,7 +44,7 @@ def main():
     main_window.show()
 
     # Start the application's event loop
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     main()

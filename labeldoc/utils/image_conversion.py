@@ -1,6 +1,6 @@
 # app/utils/image_conversion.py
 
-from PyQt5.QtGui import QImage
+from PyQt6.QtGui import QImage
 from PIL import Image
 
 def pil_to_qimage(pil_image):

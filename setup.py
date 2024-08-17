@@ -30,7 +30,7 @@ def get_install_requires():
         'numpy',
         'Pillow>=2.8.0',
         'PyYAML',
-        'PyQt5',
+        'PyQt6',
         'qtpy',
         'termcolor',
         'pdf2image',
