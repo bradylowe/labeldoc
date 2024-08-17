@@ -63,11 +63,24 @@ class MainWindow(QMainWindow):
         save_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'save.png')), "Save")
         save_action.triggered.connect(self.save_annotations)
 
+        toolbar.addSeparator()
+
         next_page_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'next.png')), "Next Page")
         next_page_action.triggered.connect(self.next_page)
 
         previous_page_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'prev.png')), "Previous Page")
         previous_page_action.triggered.connect(self.previous_page)
+
+        undo_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'undo.png')), "Undo")
+        undo_action.triggered.connect(self.canvas.action_manager.undo)
+
+        redo_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'redo.png')), "Redo")
+        redo_action.triggered.connect(self.canvas.action_manager.redo)
+
+        toolbar.addSeparator()
+
+        print_log_action = toolbar.addAction(QIcon(os.path.join(icon_path, 'log.png')), "Print Actions Log")
+        print_log_action.triggered.connect(self.canvas.action_manager.print_action_log)
 
         '''
         first_page_action = toolbar.addAction("First Page")
