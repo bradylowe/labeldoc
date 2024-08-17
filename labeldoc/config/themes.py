@@ -1,14 +1,3 @@
-# config.py
-
-# Application Settings
-APP_NAME = "labeldoc"
-WINDOW_WIDTH = 1200
-WINDOW_HEIGHT = 800
-
-# Paths
-DEFAULT_SAVE_PATH = "annotations.json"
-
-# Themes
 DARK_THEME = """
 QMainWindow {
     background-color: #2E2E2E;  /* Dark background for the main window */

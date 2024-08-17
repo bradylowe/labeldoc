@@ -4,7 +4,8 @@ import sys
 import argparse
 from PyQt6.QtWidgets import QApplication
 from .views.main_view import MainWindow
-from .config import APP_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, DARK_THEME
+from .config.settings import APP_NAME, WINDOW_WIDTH, WINDOW_HEIGHT
+from .config.themes import DARK_THEME
 
 from .models.document_model import DocumentModel
 from .controllers.app_controller import AppController
