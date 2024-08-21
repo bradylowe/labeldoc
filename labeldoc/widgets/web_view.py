@@ -102,11 +102,19 @@ class BrowserWindow(QMainWindow):
         self.url_bar.setText(browser_tab.url().toString())
 
         browser_tab.urlChanged.connect(lambda: self.update_url(browser_tab))
+    
+    def clean_url(self, url):
+        clean_url = url
+        if len(url) > 3 and url[:4] != 'http':
+            clean_url = 'http://' + clean_url
+        return clean_url
+    
+    def get_clean_url(self):
+        return self.clean_url(self.url_bar.text())
 
     def navigate_to_url(self):
-        url = self.url_bar.text()
         current_browser = self.tabs.currentWidget()
-        current_browser.load_url(url)
+        current_browser.load_url(self.get_clean_url())
 
     def update_url(self, browser):
         self.url_bar.setText(browser.url().toString())
