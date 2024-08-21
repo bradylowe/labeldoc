@@ -1,13 +1,7 @@
 # app/views/main_view.py
 
-import os
-from PyQt6.QtCore import Qt, QStandardPaths
-from PyQt6.QtWidgets import (
-    QMainWindow, 
-    QDockWidget, 
-    QFileDialog, 
-    QScrollArea,
-)
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMainWindow, QDockWidget, QFileDialog, QWidget, QHBoxLayout
 
 from ..widgets.canvas import CanvasWidget
 from ..widgets.results_widget import ResultsWidget
@@ -22,14 +16,15 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("LabelDoc")
         self.setGeometry(100, 100, 1200, 800)
 
-        # Create the scroll area and set the CanvasWidget as its widget
-        self.scroll_area = QScrollArea()
-        self.canvas = CanvasWidget(self.scroll_area)
-        self.scroll_area.setWidget(self.canvas)
-        self.scroll_area.setWidgetResizable(True)
+        # Set central layout
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+        layout = QHBoxLayout(central_widget)
+        layout.setContentsMargins(0, 0, 0, 0)
 
-        # Set the scroll area as the central widget
-        self.setCentralWidget(self.scroll_area)
+        # Create the CanvasWidget and add it to the layout
+        self.canvas = CanvasWidget(self)
+        layout.addWidget(self.canvas)
 
         # Toolbar on the left
         self.toolbar = ToolbarWidget(self)
@@ -102,5 +97,3 @@ class MainWindow(QMainWindow):
                     self.controller.load_images(pil_images)  # Assuming you have a method to handle a list of PIL images
                 except RuntimeError as e:
                     print(f"Failed to load browser page: {e}")
-
-
